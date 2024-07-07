@@ -7,6 +7,7 @@ import com.competitiverival.hotelserver.dto.SignupRequest;
 import com.competitiverival.hotelserver.dto.UserDto;
 import com.competitiverival.hotelserver.repository.UserRepository;
 import com.competitiverival.hotelserver.service.AuthService;
+import com.competitiverival.hotelserver.service.UserService;
 import com.competitiverival.hotelserver.utils.JwtUtil;
 import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,8 @@ public class AuthController {
 
     private final JwtUtil jwtUtil;
 
+    private final UserService userService;
+
 
     @PostMapping("/signup")
     public ResponseEntity<?> signupUser(@RequestBody SignupRequest signupRequest) {
@@ -60,7 +63,7 @@ public class AuthController {
             throw new BadCredentialsException("Incorrect username or password.");
         }
 
-        final UserDetails userDetails = null;
+        final UserDetails userDetails = userService.userDetailsService().loadUserByUsername(authenticationRequest.getEmail());
         Optional<User> optionalUser = userRepository.findFirstByEmail(userDetails.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails);
 

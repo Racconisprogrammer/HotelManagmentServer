@@ -4,6 +4,7 @@ package com.competitiverival.hotelserver.domain;
 import com.competitiverival.hotelserver.domain.enums.UserRole;
 import com.competitiverival.hotelserver.dto.UserDto;
 import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,6 +37,9 @@ public class User implements UserDetails {
 
     private String name;
 
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
     @Override
